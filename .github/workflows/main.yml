@@ -1,0 +1,55 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
+
+      # Paso opcional pero recomendado: Configurar la versión de Node.js explícitamente
+      # Esto asegura un entorno consistente para npm install y vite build.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4 # Usar la versión más reciente para mejor soporte
+        with:
+          node-version: '18.x' # Puedes probar con '20.x' si es compatible con tus dependencias
+          cache: 'npm' # Habilita la caché de npm para acelerar futuras compilaciones
+
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_PLANT_0C4C98F1E }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Usado para integraciones de Github (ej. comentarios de PR)
+          action: "upload"
+          ###### Configuraciones de Repositorio/Compilación - Estos valores deben coincidir con los requisitos de tu app. ######
+          # Para más información sobre las configuraciones de workflow de Static Web App, visita: https://aka.ms/swaworkflowconfig
+          app_location: "/" # Ruta del código fuente de la App (tu frontend React/Vite en la raíz del repositorio)
+          api_location: "backend" # Ruta del código fuente de la Api (tu backend Python en la carpeta 'backend')
+          output_location: "dist" # Directorio del contenido de la App compilada (Vite genera 'dist')
+          ###### Fin de Configuraciones de Repositorio/Compilación ######
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_PLANT_0C4C98F1E }}
+          action: "close"
