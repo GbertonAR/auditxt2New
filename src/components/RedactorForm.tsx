@@ -190,7 +190,7 @@ export function RedactorForm({ onGenerado }: { onGenerado?: (titulo: string, con
 
       {/* Botón */}
       <div className="space-y-2">
-        <Button type="submit" disabled={loading || !prompt.trim()} aria-busy={loading} className="text-blue">
+        <Button type="submit" disabled={loading || !prompt.trim()} aria-busy={loading} className="text-blue-500">
           {loading ? "Generando..." : "✨ Generar contenido"}
         </Button>
 
