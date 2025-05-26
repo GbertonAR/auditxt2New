@@ -1,0 +1,34 @@
+.
+├── README.md
+├── eslint.config.js
+├── estructura_proyecto.txt
+├── index.html
+├── package-lock.json
+├── package.json
+├── public
+│   └── vite.svg
+├── redator-prensa
+│   ├── backend
+│   │   └── utils
+│   ├── index.html
+│   ├── server
+│   │   └── index.js
+│   └── src
+│       ├── app.tsx
+│       ├── components
+│       ├── lib
+│       └── main.tsx
+├── src
+│   ├── App.css
+│   ├── App.tsx
+│   ├── assets
+│   │   └── react.svg
+│   ├── index.css
+│   ├── main.tsx
+│   └── vite-env.d.ts
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
+
+11 directories, 21 files
