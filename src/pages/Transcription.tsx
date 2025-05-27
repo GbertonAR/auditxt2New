@@ -38,6 +38,9 @@ export default function Transcribir() {
     setResultado("");
     setCargando(true);
 
+    // #print(`Iniciando transcripción en modo: ${modo}`);
+    console.log(`Modo seleccionado: ${modo}`);
+    console.log(`URL del audio: ${audioURL}`);
     try {
       let response;
       if (modo === "url") {
@@ -62,7 +65,8 @@ export default function Transcribir() {
       } else {
         throw new Error("Modo no válido o archivo faltante."); // Esto no debería ocurrir, pero es una precaución
       }
-
+      // print(`Respuesta del servidor: ${response.status} ${response.statusText}`);
+      console.log("Respuesta del servidor:", response);
       if (!response.ok) {
         let errorMessage = `Error del servidor: ${response.status} ${response.statusText}`;
         try {
