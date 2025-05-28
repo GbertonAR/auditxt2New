@@ -44,7 +44,7 @@ export default function Transcribir() {
     try {
       let response;
       if (modo === "url") {
-        response = await fetch("http://localhost:8000/api/transcribir", {
+        response = await fetch("https://backprensa-crdvhchaapccaac2.westus-01.azurewebsites.net/api/transcribir", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export default function Transcribir() {
         const formData = new FormData();
         formData.append("audio", audioFile);
         formData.append("modo_salida", "dialogo");
-        response = await fetch("http://localhost:8000/api/transcribir-archivo", {
+        response = await fetch("https://backprensa-crdvhchaapccaac2.westus-01.azurewebsites.net/api/transcribir-archivo", {
           method: "POST",
           body: formData,
         });
