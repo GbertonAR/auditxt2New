@@ -39,7 +39,7 @@ jobs:
           # Para más información sobre las configuraciones de workflow de Static Web App, visita: https://aka.ms/swaworkflowconfig
           app_location: "/" # Ruta del código fuente de la App (tu frontend React/Vite en la raíz del repositorio)
           api_location: "backend" # Ruta del código fuente de la Api (tu backend Python en la carpeta 'backend')
-          output_location: "dist" # Directorio del contenido de la App compilada (Vite genera 'dist')
+          output_location: "build" # Directorio del contenido de la App compilada (Vite genera 'dist')
           ###### Fin de Configuraciones de Repositorio/Compilación ######
 
   close_pull_request_job:
