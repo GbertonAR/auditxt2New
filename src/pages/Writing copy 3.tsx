@@ -1,5 +1,3 @@
-// src/pages/Writing.tsx
-
 import { useState } from "react"
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
@@ -54,6 +52,35 @@ export default function Writing() {
     }
   }
 
+  // 👇 CAMBIO: Descargar archivo como .txt o .docx
+  const descargarArchivo = async (formato: "txt" | "docx") => {
+    try {
+      const res = await fetch(`http://localhost:8000/api/descargar-articulo?formato=${formato}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ titulo, autor, contenido }),
+      })
+
+      if (!res.ok) throw new Error("Error al descargar el archivo")
+
+      const blob = await res.blob()
+      const url = window.URL.createObjectURL(blob)
+
+      const link = document.createElement("a")
+      link.href = url
+      link.download = `${titulo}.${formato}`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error(err)
+      alert("❌ Error al descargar el archivo")
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6 flex flex-col items-center space-y-10">
       <h1 className="text-4xl font-bold text-center text-primary">📝 Redactor AI</h1>
@@ -99,9 +126,12 @@ export default function Writing() {
           />
         </div>
 
-        <div className="flex justify-between items-center space-x-4">
+        <div className="flex flex-wrap gap-3 justify-between items-center">
           <Button variant="secondary" onClick={handleAudio}>🔊 Audio</Button>
           <Button onClick={handleSubmit}>💾 Guardar Artículo</Button>
+          {/* 👇 CAMBIO: Botones de descarga */}
+          <Button onClick={() => descargarArchivo("txt")}>⬇️ Descargar TXT</Button>
+          <Button onClick={() => descargarArchivo("docx")}>⬇️ Descargar DOCX</Button>
         </div>
 
         {audioURL && (
