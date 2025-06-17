@@ -83,8 +83,7 @@ export default function Transcribir() {
       }
 
       const data = await response.json();
-      console.log("Datos recibidos y parseados del backend:", data);
-      setResultado(data.transcripcion || "✅ Transcripción completada, pero vacía.");
+      setResultado(data.resultado || "✅ Transcripción completada, pero vacía.");
     } catch (err) {
       let errorMessage = "❌ Error: ";
       if (err instanceof TypeError && err.message === 'Failed to fetch') {
