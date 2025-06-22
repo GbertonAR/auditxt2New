@@ -1,67 +1,66 @@
 // src/pages/Writing.tsx
-
-import { useState } from "react"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
-import { Textarea } from "../components/ui/textarea"
-import { Button } from "../components/ui/button"
-import { RedactorForm } from "../components/RedactorForm"
+import { useState } from "react";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
+import { Button } from "../components/ui/button";
+import { RedactorForm } from "../components/RedactorForm";
 
 export default function Writing() {
-  const [titulo, setTitulo] = useState("")
-  const [contenido, setContenido] = useState("")
-  const [autor, setAutor] = useState("")
-  const [audioURL, setAudioURL] = useState<string | null>(null)
+  // ---------------------- estado ----------------------
+  const [titulo, setTitulo] = useState("");
+  const [contenido, setContenido] = useState("");
+  const [autor, setAutor] = useState("");
+  const [audioURL, setAudioURL] = useState<string | null>(null);
 
+  // Base URL desde .env  ➜  VITE_API_URL=http://localhost:8000  (dev)
+  //                      VITE_API_URL=https://gb-audit-back-app-fab0aeb9cfgubeee.westus-01.azurewebsites.net (prod)
+  const baseURL = import.meta.env.VITE_API_URL;
+
+  // -------------------- guardar artículo --------------------
   const handleSubmit = async () => {
     try {
-      console.log("Guardando artículo:", { titulo, contenido, autor })
-      const res = await fetch("http://localhost:8000/api/guardar-articulo", {
+      const res = await fetch(`${baseURL}/api/guardar-articulo`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ titulo, contenido, autor }),
-      })
+      });
 
-      if (!res.ok) throw new Error("Error al guardar artículo")
-
-      alert("✅ Artículo guardado correctamente")
-    } catch (err) {
-      console.error(err)
-      alert("❌ Error al guardar el artículo")
+      if (!res.ok) throw new Error("Error al guardar artículo");
+      alert("✅ Artículo guardado correctamente");
+    } catch (err: unknown) {
+      console.error(err);
+      alert("❌ Error al guardar el artículo");
     }
-  }
+  };
 
+  // ------------------ generar audio TTS --------------------
   const handleAudio = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/texto-audio", {
+      const res = await fetch(`${baseURL}/api/texto-audio`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ texto: contenido }),
-      })
+      });
 
-      if (!res.ok) throw new Error("Error al generar audio")
-
-      const blob = await res.blob()
-      const url = URL.createObjectURL(blob)
-      setAudioURL(url)
-    } catch (err) {
-      console.error(err)
-      alert("❌ Error al generar el audio")
+      if (!res.ok) throw new Error("Error al generar audio");
+      const blob = await res.blob();
+      setAudioURL(URL.createObjectURL(blob));
+    } catch (err: unknown) {
+      console.error(err);
+      alert("❌ Error al generar el audio");
     }
-  }
+  };
 
+  // ------------------------ UI ------------------------
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6 flex flex-col items-center space-y-10">
       <h1 className="text-4xl font-bold text-center text-primary">📝 Redactor AI</h1>
 
       <RedactorForm
         onGenerado={(tituloGenerado, contenidoGenerado) => {
-          setTitulo(tituloGenerado)
-          setContenido(contenidoGenerado)
+          setTitulo(tituloGenerado);
+          setContenido(contenidoGenerado);
         }}
       />
 
@@ -111,5 +110,5 @@ export default function Writing() {
         )}
       </div>
     </div>
-  )
+  );
 }

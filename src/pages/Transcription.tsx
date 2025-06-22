@@ -1,149 +1,124 @@
+// src/pages/Transcribir.tsx
 import React, { useState } from "react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { UploadCloud, LinkIcon } from "lucide-react";
 
-const isValidURL = (url) => {
+const isValidURL = (url: string): boolean => {
   try {
     new URL(url);
     return true;
-  } catch (_) {
+  } catch {
     return false;
   }
 };
 
 export default function Transcribir() {
-  const [modo, setModo] = useState<"archivo" | "url">("url"); // Modo por defecto
+  // --------------------------- estado ---------------------------
+  const [modo, setModo] = useState<"archivo" | "url">("url");
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [audioURL, setAudioURL] = useState("");
   const [error, setError] = useState("");
   const [resultado, setResultado] = useState("");
   const [cargando, setCargando] = useState(false);
 
+  // -------------------- baseURL desde .env ----------------------
+  const baseURL = import.meta.env.VITE_API_URL; // ej: http://localhost:8000
+
+  // -------------------- submit principal ------------------------
   const handleSubmit = async () => {
-    if (modo === "archivo" && !audioFile) {
-      setError("Seleccioná un archivo de audio.");
-      return;
-    }
-    if (modo === "url" && !audioURL) {
-      setError("Ingresá una URL.");
-      return;
-    }
-    if (modo === "url" && !isValidURL(audioURL)) {
-      setError("La URL no es válida.");
-      return;
-    }
-
-    setError("");
-    setResultado("");
-    setCargando(true);
-
-    // #print(`Iniciando transcripción en modo: ${modo}`);
-    console.log(`Modo seleccionado: ${modo}`);
-    console.log(`URL del audio: ${audioURL}`);
     try {
-      let response;
+      // Validaciones rápidas
+      if (modo === "archivo" && !audioFile) {
+        setError("Seleccioná un archivo de audio.");
+        return;
+      }
+      if (modo === "url" && (!audioURL || !isValidURL(audioURL))) {
+        setError("Ingresá una URL válida.");
+        return;
+      }
+
+      setError("");
+      setResultado("");
+      setCargando(true);
+
+      let response: Response;
+
       if (modo === "url") {
-        // response = await fetch("https://backprensa-crdvhchaapccaac2.westus-01.azurewebsites.net/api/transcribir", {
-        response = await fetch("http://localhost:8000/api/transcribir", {  
+        response = await fetch(`${baseURL}/api/transcribir`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            link: audioURL,
-            modo_salida: "dialogo",
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ link: audioURL, modo_salida: "dialogo" }),
         });
-      } else if (modo === "archivo" && audioFile) {
+      } else {
+        // modo === "archivo"
         const formData = new FormData();
-        formData.append("audio", audioFile);
+        formData.append("audio", audioFile as Blob);
         formData.append("modo_salida", "dialogo");
-        
-        // response = await fetch("https://backprensa-crdvhchaapccaac2.westus-01.azurewebsites.net/api/transcribir-archivo", {  
-        response = await fetch("http://localhost:8000/api/transcribir-archivo", {
+
+        response = await fetch(`${baseURL}/api/transcribir-archivo`, {
           method: "POST",
           body: formData,
         });
-      } else {
-        throw new Error("Modo no válido o archivo faltante."); // Esto no debería ocurrir, pero es una precaución
       }
-      // print(`Respuesta del servidor: ${response.status} ${response.statusText}`);
-      console.log("Respuesta del servidor:", response);
-      console.log("Cuerpo de la respuesta:", response.body);
+
       if (!response.ok) {
-        let errorMessage = `Error del servidor: ${response.status} ${response.statusText}`;
+        let mensaje = `Error del servidor: ${response.status} ${response.statusText}`;
         try {
-          const errorData = await response.json();
-          errorMessage += ` - ${errorData.message || JSON.stringify(errorData)}`;
-        } catch (jsonError) {
-          errorMessage += " (Error al parsear la respuesta JSON)";
+          const dataErr = await response.json();
+          mensaje += ` - ${dataErr.message || JSON.stringify(dataErr)}`;
+        } catch {
+          mensaje += " (respuesta no es JSON)";
         }
-        throw new Error(errorMessage);
+        throw new Error(mensaje);
       }
 
       const data = await response.json();
-      console.log("Datos recibidos y parseados del backend:", data);
       setResultado(data.transcripcion || "✅ Transcripción completada, pero vacía.");
     } catch (err) {
-      let errorMessage = "❌ Error: ";
-      if (err instanceof TypeError && err.message === 'Failed to fetch') {
-        errorMessage += "No se pudo alcanzar el servidor. Verifica la conexión de red o la URL.";
-      } else if (err instanceof Error) {
-        errorMessage += err.message;
-      } else {
-        errorMessage += String(err);
-      }
-      setError(errorMessage);
+      const msg =
+        err instanceof Error
+          ? `❌ Error: ${err.message}`
+          : "❌ Ocurrió un error inesperado.";
+      setError(msg);
       console.error(err);
     } finally {
       setCargando(false);
     }
   };
 
+  // ---------------------------- UI -----------------------------
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-6">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-xl space-y-6">
         <h1 className="text-2xl font-bold text-gray-800 text-center">
           🎙️ Transcripción de Audio
         </h1>
-        <p className="text-gray-600 text-center">
-          Elegí una fuente de audio
-        </p>
+        <p className="text-gray-600 text-center">Elegí una fuente de audio</p>
 
+        {/* selector de modo */}
         <div className="flex justify-center gap-6">
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="modo"
-              value="archivo"
-              checked={modo === "archivo"}
-              onChange={() => {
-                setModo("archivo");
-                setAudioURL("");
-                setResultado("");
-                setError("");
-              }}
-            />
-            <span>Archivo</span>
-          </label>
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="modo"
-              value="url"
-              checked={modo === "url"}
-              onChange={() => {
-                setModo("url");
-                setAudioFile(null);
-                setResultado("");
-                setError("");
-              }}
-            />
-            <span>URL</span>
-          </label>
+          {["archivo", "url"].map((m) => (
+            <label key={m} className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="modo"
+                value={m}
+                checked={modo === m}
+                onChange={() => {
+                  setModo(m as "archivo" | "url");
+                  setAudioFile(null);
+                  setAudioURL("");
+                  setResultado("");
+                  setError("");
+                }}
+              />
+              <span className="capitalize">{m}</span>
+            </label>
+          ))}
         </div>
 
+        {/* input archivo */}
         {modo === "archivo" && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -153,7 +128,6 @@ export default function Transcribir() {
               <Input
                 type="file"
                 accept="audio/*"
-                className="cursor-pointer"
                 onChange={(e) => setAudioFile(e.target.files?.[0] ?? null)}
               />
               <UploadCloud className="w-5 h-5 text-purple-500" />
@@ -161,6 +135,7 @@ export default function Transcribir() {
           </div>
         )}
 
+        {/* input url */}
         {modo === "url" && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -178,14 +153,20 @@ export default function Transcribir() {
           </div>
         )}
 
+        {/* errores */}
         {error && (
           <p className="text-sm text-red-600 font-medium text-center">{error}</p>
         )}
 
+        {/* botón principal */}
         <Button
           className="w-full"
           onClick={handleSubmit}
-          disabled={cargando || (modo === "archivo" && !audioFile) || (modo === "url" && !audioURL)} // Deshabilita mientras carga
+          disabled={
+            cargando ||
+            (modo === "archivo" && !audioFile) ||
+            (modo === "url" && !audioURL)
+          }
         >
           {cargando ? (
             <>
@@ -197,6 +178,7 @@ export default function Transcribir() {
           )}
         </Button>
 
+        {/* resultado */}
         {resultado && (
           <div className="bg-gray-100 text-sm text-gray-800 p-4 rounded-md whitespace-pre-wrap max-h-[400px] overflow-y-auto">
             {resultado}
