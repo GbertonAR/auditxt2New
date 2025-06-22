@@ -55,7 +55,7 @@ export function RedactorForm({ onGenerado }: { onGenerado?: (titulo: string, con
     setError(null);
 
     try {
-      const res = await fetch("https://backprensa-crdvhchaapccaac2.westus-01.azurewebsites.net/api/generar", {
+      const res = await fetch(`${baseURL}/api/texto-audio`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
