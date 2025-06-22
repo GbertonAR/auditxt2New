@@ -20,27 +20,22 @@ jobs:
           submodules: true
           lfs: false
 
-      # Paso opcional pero recomendado: Configurar la versión de Node.js explícitamente
-      # Esto asegura un entorno consistente para npm install y vite build.
       - name: Setup Node.js
-        uses: actions/setup-node@v4 # Usar la versión más reciente para mejor soporte
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.x' # Puedes probar con '20.x' si es compatible con tus dependencias
-          cache: 'npm' # Habilita la caché de npm para acelerar futuras compilaciones
+          node-version: '18.x'
+          cache: 'npm'
 
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_PLANT_0C4C98F1E }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Usado para integraciones de Github (ej. comentarios de PR)
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          ###### Configuraciones de Repositorio/Compilación - Estos valores deben coincidir con los requisitos de tu app. ######
-          # Para más información sobre las configuraciones de workflow de Static Web App, visita: https://aka.ms/swaworkflowconfig
-          app_location: "/" # Ruta del código fuente de la App (tu frontend React/Vite en la raíz del repositorio)
-          api_location: "backend" # Ruta del código fuente de la Api (tu backend Python en la carpeta 'backend')
-          output_location: "dist" # Directorio del contenido de la App compilada (Vite genera 'dist')
-          ###### Fin de Configuraciones de Repositorio/Compilación ######
+          app_location: "/"          # cambialo si usás un subdirectorio
+          api_location: null         # importante si NO usás Azure Functions
+          output_location: "dist"    # carpeta generada por Vite
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -51,5 +46,5 @@ jobs:
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_PLANT_0C4C98F1E }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: "close"
