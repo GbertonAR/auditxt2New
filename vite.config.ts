@@ -17,7 +17,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://backprensa-crdvhchaapccaac2.westus-01.azurewebsites.net:8000',
+        target: env.VITE_API_BASE_URL || 'http://localhost:8000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       }
