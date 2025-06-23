@@ -1,4 +1,3 @@
-// src/pages/Writing.tsx
 import { useState, useEffect } from "react";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -7,26 +6,23 @@ import { Button } from "../components/ui/button";
 import { RedactorForm } from "../components/RedactorForm";
 
 export default function Writing() {
-  // ---------------------- estado ----------------------
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [autor, setAutor] = useState("");
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [fechaHora, setFechaHora] = useState("");
 
-  // Base URL desde .env
+  // ✅ Acceder directamente a la variable de entorno
   const baseURL = import.meta.env.VITE_API_URL;
-  console.log("Base URL desde writing.env:", baseURL);
 
-  // Mostrar fecha y hora de ejecución al cargar el componente
   useEffect(() => {
     const now = new Date();
     const fechaHoraString = now.toLocaleString();
     setFechaHora(fechaHoraString);
-    console.log("Fecha y hora de ejecución:", fechaHoraString);
+    console.log("🕒 Fecha y hora:", fechaHoraString);
+    console.log("🌐 API URL desde import.meta.env:", baseURL);
   }, []);
 
-  // -------------------- guardar artículo --------------------
   const handleSubmit = async () => {
     try {
       const res = await fetch(`${baseURL}/api/guardar-articulo`, {
@@ -37,13 +33,12 @@ export default function Writing() {
 
       if (!res.ok) throw new Error("Error al guardar artículo");
       alert("✅ Artículo guardado correctamente");
-    } catch (err: unknown) {
+    } catch (err) {
       console.error(err);
       alert("❌ Error al guardar el artículo");
     }
   };
 
-  // ------------------ generar audio TTS --------------------
   const handleAudio = async () => {
     try {
       const res = await fetch(`${baseURL}/api/texto-audio`, {
@@ -55,24 +50,21 @@ export default function Writing() {
       if (!res.ok) throw new Error("Error al generar audio");
       const blob = await res.blob();
       setAudioURL(URL.createObjectURL(blob));
-    } catch (err: unknown) {
+    } catch (err) {
       console.error(err);
       alert("❌ Error al generar el audio");
     }
   };
 
-  // ------------------------ UI ------------------------
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6 flex flex-col items-center space-y-10">
-      {/* Mostrar fecha y hora */}
-      <p className="text-sm text-gray-500">{`Fecha y hora de ejecución: ${fechaHora}`}</p>
-
+      <p className="text-sm text-gray-500">{`🕒 Ejecutado el: ${fechaHora}`}</p>
       <h1 className="text-4xl font-bold text-center text-primary">📝 Redactor AI</h1>
 
       <RedactorForm
-        onGenerado={(tituloGenerado, contenidoGenerado) => {
-          setTitulo(tituloGenerado);
-          setContenido(contenidoGenerado);
+        onGenerado={(t, c) => {
+          setTitulo(t);
+          setContenido(c);
         }}
       />
 
@@ -80,39 +72,23 @@ export default function Writing() {
         <h2 className="text-2xl font-semibold">📄 Completa y guarda tu artículo</h2>
 
         <div className="space-y-2">
-          <Label htmlFor="titulo">Título del artículo</Label>
-          <Input
-            id="titulo"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-            placeholder="Ingresa un título llamativo"
-          />
+          <Label htmlFor="titulo">Título</Label>
+          <Input id="titulo" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="contenido">Contenido</Label>
-          <Textarea
-            id="contenido"
-            rows={10}
-            value={contenido}
-            onChange={(e) => setContenido(e.target.value)}
-            placeholder="Pega aquí el texto generado o edítalo..."
-          />
+          <Textarea id="contenido" rows={10} value={contenido} onChange={(e) => setContenido(e.target.value)} />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="autor">Autor</Label>
-          <Input
-            id="autor"
-            value={autor}
-            onChange={(e) => setAutor(e.target.value)}
-            placeholder="Nombre del autor"
-          />
+          <Input id="autor" value={autor} onChange={(e) => setAutor(e.target.value)} />
         </div>
 
         <div className="flex justify-between items-center space-x-4">
           <Button variant="secondary" onClick={handleAudio}>🔊 Audio</Button>
-          <Button onClick={handleSubmit}>💾 Guardar Artículo</Button>
+          <Button onClick={handleSubmit}>💾 Guardar</Button>
         </div>
 
         {audioURL && (
