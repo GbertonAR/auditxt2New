@@ -10,7 +10,6 @@ export default defineConfig(({ mode }) => {
   console.log('Modo:', mode)
   console.log('Variable VITE_API_URL:', env.VITE_API_URL)
 
-
   return {
     plugins: [react()],
     resolve: {
@@ -25,6 +24,11 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
+      },
+    },
+    build: {
+      rollupOptions: {
+        external: ['fsevents'],  // <-- Excluir fsevents para evitar error en build
       },
     },
   }
