@@ -16,6 +16,7 @@ export default function Writing() {
   // Base URL desde .env  ➜  VITE_API_URL=http://localhost:8000  (dev)
   //                      VITE_API_URL=https://gb-audit-back-app-fab0aeb9cfgubeee.westus-01.azurewebsites.net (prod)
   const baseURL = import.meta.env.VITE_API_URL;
+  console.log("Base URL desde writing.env:", baseURL);
 
   // -------------------- guardar artículo --------------------
   const handleSubmit = async () => {

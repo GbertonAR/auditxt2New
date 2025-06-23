@@ -24,6 +24,7 @@ export default function Transcribir() {
 
   // -------------------- baseURL desde .env ----------------------
   const baseURL = import.meta.env.VITE_API_URL; // ej: http://localhost:8000
+  console.log("Base URL desde Transcri.env:", baseURL);
 
   // -------------------- submit principal ------------------------
   const handleSubmit = async () => {
