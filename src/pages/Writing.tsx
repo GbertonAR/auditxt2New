@@ -14,13 +14,14 @@ export default function Writing() {
 
   // ✅ Acceder directamente a la variable de entorno
   const baseURL = import.meta.env.VITE_API_URL;
+  console.log("🌐 API URL desde Writing1 import.meta.env:", baseURL);
 
   useEffect(() => {
     const now = new Date();
     const fechaHoraString = now.toLocaleString();
     setFechaHora(fechaHoraString);
     console.log("🕒 Fecha y hora:", fechaHoraString);
-    console.log("🌐 API URL desde import.meta.env:", baseURL);
+    console.log("🌐 API URL desde Writing import.meta.env:", baseURL);
   }, []);
 
   const handleSubmit = async () => {
