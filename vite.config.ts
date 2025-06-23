@@ -5,10 +5,12 @@ import path from 'path'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
+  const now = new Date()
+  console.log('Ejecutando vite.config.ts en:', now.toLocaleString())
   console.log('Modo:', mode)
   console.log('Variable VITE_API_URL:', env.VITE_API_URL)
 
-  
+
   return {
     plugins: [react()],
     resolve: {
