@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
   // 📅 Log útil solo durante desarrollo
   const now = new Date();
   console.log(`🕒 Build ejecutado el: ${now.toLocaleString()}`);
-  console.log("🌍 VITE_API_URL:", env.VITE_API_URL);
+  console.log("🌍 VITE_API_URL (vite.config):", env.VITE_API_URL);
 
   return {
     plugins: [react()],

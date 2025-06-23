@@ -13,7 +13,7 @@ export default function Writing() {
   const [fechaHora, setFechaHora] = useState("");
 
   // ✅ Acceder directamente a la variable de entorno
-  const baseURL = import.meta.env.VITE_API_URL;
+  const baseURL = import.meta.env.VITE_API_SRV;
   console.log("🌐 API URL desde Writing1 import.meta.env:", baseURL);
 
   useEffect(() => {
