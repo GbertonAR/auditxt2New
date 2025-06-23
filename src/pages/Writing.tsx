@@ -1,4 +1,5 @@
 // src/pages/Writing.tsx
+import { defineConfig, loadEnv } from 'vite'
 import { useState } from "react";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -15,8 +16,16 @@ export default function Writing() {
 
   // Base URL desde .env  ➜  VITE_API_URL=http://localhost:8000  (dev)
   //                      VITE_API_URL=https://gb-audit-back-app-fab0aeb9cfgubeee.westus-01.azurewebsites.net (prod)
+
+
+
+  const env = loadEnv(mode, process.cwd(), '')
+  const now = new Date()
+  console.log('Ejecutando vite.config.ts en:', now.toLocaleString())
+  console.log('Modo:', mode)
+  console.log('Variable VITE_API_URL:', env.VITE_API_URL)
   const baseURL = import.meta.env.VITE_API_URL;
-  console.log("Base URL desde writing.env:", baseURL);
+  console.log("Base URL desde writing.env:", baseURL);  
 
   // -------------------- guardar artículo --------------------
   const handleSubmit = async () => {
