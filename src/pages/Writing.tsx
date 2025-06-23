@@ -1,6 +1,5 @@
 // src/pages/Writing.tsx
-import { defineConfig, loadEnv } from 'vite'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
@@ -13,19 +12,19 @@ export default function Writing() {
   const [contenido, setContenido] = useState("");
   const [autor, setAutor] = useState("");
   const [audioURL, setAudioURL] = useState<string | null>(null);
+  const [fechaHora, setFechaHora] = useState("");
 
-  // Base URL desde .env  ➜  VITE_API_URL=http://localhost:8000  (dev)
-  //                      VITE_API_URL=https://gb-audit-back-app-fab0aeb9cfgubeee.westus-01.azurewebsites.net (prod)
-
-
-
-  const env = loadEnv(mode, process.cwd(), '')
-  const now = new Date()
-  console.log('Ejecutando vite.config.ts en:', now.toLocaleString())
-  console.log('Modo:', mode)
-  console.log('Variable VITE_API_URL:', env.VITE_API_URL)
+  // Base URL desde .env
   const baseURL = import.meta.env.VITE_API_URL;
-  console.log("Base URL desde writing.env:", baseURL);  
+  console.log("Base URL desde writing.env:", baseURL);
+
+  // Mostrar fecha y hora de ejecución al cargar el componente
+  useEffect(() => {
+    const now = new Date();
+    const fechaHoraString = now.toLocaleString();
+    setFechaHora(fechaHoraString);
+    console.log("Fecha y hora de ejecución:", fechaHoraString);
+  }, []);
 
   // -------------------- guardar artículo --------------------
   const handleSubmit = async () => {
@@ -65,6 +64,9 @@ export default function Writing() {
   // ------------------------ UI ------------------------
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6 flex flex-col items-center space-y-10">
+      {/* Mostrar fecha y hora */}
+      <p className="text-sm text-gray-500">{`Fecha y hora de ejecución: ${fechaHora}`}</p>
+
       <h1 className="text-4xl font-bold text-center text-primary">📝 Redactor AI</h1>
 
       <RedactorForm
