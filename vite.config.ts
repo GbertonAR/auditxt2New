@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => {
 
   // 📅 Log útil solo durante desarrollo
   const now = new Date();
+  const VITE_API_URL = "http://localhost:8000"
   console.log(`🕒 Build ejecutado el: ${now.toLocaleString()}`);
   console.log("🌍 VITE_API_URL (vite.config):", env.VITE_API_URL);
 

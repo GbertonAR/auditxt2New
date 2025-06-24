@@ -1,0 +1,87 @@
+Listado de rutas de carpetas
+El n�mero de serie del volumen es 68CA-4415
+C:.
+|   .env
+|   .gitignore
+|   eslint.config.js
+|   estructura.txt
+|   estructura_proyecto.txt
+|   gitignore copy.txt
+|   index.html
+|   package-lock.json
+|   package.json
+|   README.md
+|   respuesta.json
+|   tailwind.config.ts
+|   tester.html
+|   tsconfig.app.json
+|   tsconfig.json
+|   tsconfig.node.json
+|   vite.config.ts
+|   
+|               
++---dist
+|   |   index.html
+|   |   vite.svg
+|   |   
+|   \---assets
+|           index-BFtDkbFF.css
+|           index-BrtS0ynF.js
+|           
++---public
+|       vite.svg
+|       
++---redator-prensa
+|   |   .env
+|   |   index.html
+|   |   
+|   +---server
+|   |       index.js
+|   |       
+|   \---src
+|       |   app.tsx
+|       |   main.tsx
+|       |   
+|       +---components
+|       |       RedactorForm.tsx
+|       |       
+|       \---lib
+|               openai.ts
+|               
+\---src
+    |   App.css
+    |   App.tsx
+    |   index.css
+    |   main.tsx
+    |   vite-env.d.ts
+    |   
+    +---assets
+    |       react.svg
+    |       
+    +---components
+    |   |   ModeSelector.tsx
+    |   |   RedactorForm copy 2.tsx
+    |   |   RedactorForm copy 3.tsx
+    |   |   RedactorForm copy.tsx
+    |   |   RedactorForm.tsx
+    |   |   
+    |   \---ui
+    |           button.tsx
+    |           input.tsx
+    |           label.tsx
+    |           select.tsx
+    |           textarea.tsx
+    |           
+    +---lib
+    |       utils.ts
+    |       
+    \---pages
+            home.tsx
+            Transcription copy 2.tsx
+            Transcription copy.tsx
+            Transcription.tsx
+            Writing copy 2.tsx
+            Writing copy 3.tsx
+            Writing copy.tsx
+            Writing.tsx
+            
