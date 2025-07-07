@@ -60,6 +60,18 @@ export function RedactorForm({ onGenerado }: { onGenerado?: (titulo: string, con
     console.log("🧩 API baseURL desde RedactorForm:", baseURL);
 
     try {
+      // const res = await fetch(`${baseURL}/api/generar`, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     titulo: `Redacción de ${tipo}`,
+      //     contenido: prompt,
+      //     tono: categoriaTono,
+      //     subtono,
+      //     audiencia,
+      //   }),
+      // });
+
       const res = await fetch(`${baseURL}/api/generar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -67,10 +79,11 @@ export function RedactorForm({ onGenerado }: { onGenerado?: (titulo: string, con
           titulo: `Redacción de ${tipo}`,
           contenido: prompt,
           tono: categoriaTono,
-          subtono,
-          audiencia,
+          estilo: subtono,      // ✅ importante
+          extension: tipo       // ✅ requerido por el backend
         }),
       });
+
 
       if (!res.ok) {
         let errorData;
