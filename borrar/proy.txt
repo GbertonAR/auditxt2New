@@ -1,0 +1,46 @@
+Listado de rutas de carpetas
+El n�mero de serie del volumen es 68CA-4415
+C:.
++---auditxt2
+�   +---.github
+�   �   +---workflows
+�   +---backend
+�   �   +---venv
+�   �       +---Lib
+�   �       �   +---site-packages
+�   �       �       +---pydantic_core
+�   �       +---Scripts
+�   +---dist
+�   �   +---assets
+�   +---public
+�   +---redator-prensa
+�   �   +---server
+�   �   +---src
+�   �       +---components
+�   �       +---lib
+�   +---src
+�       +---assets
+�       +---components
+�       �   +---ui
+�       +---lib
+�       +---pages
++---backend
+    +---.github
+    �   +---workflows
+    +---articulos
+    +---audios
+    +---Backend_app
+    �   +---routers
+    �   +---__pycache__
+    +---redactor
+    �   +---__pycache__
+    +---services
+    �   +---__pycache__
+    +---transcriptor
+    �   +---work
+    �   �   +---audio_work
+    �   �   +---data
+    �   +---__pycache__
+    +---utils
+    �   +---__pycache__
+

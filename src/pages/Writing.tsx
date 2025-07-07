@@ -11,8 +11,8 @@ export default function Writing() {
   const [autor, setAutor] = useState("");
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [fechaHora, setFechaHora] = useState("");
+  const [formato, setFormato] = useState<"docx" | "pdf">("docx");
 
-  // ✅ Acceder directamente a la variable de entorno
   const baseURL = import.meta.env.VITE_API_SRV;
   console.log("🌐 API URL desde Writing1 import.meta.env:", baseURL);
 
@@ -57,6 +57,28 @@ export default function Writing() {
     }
   };
 
+  const handleDescargar = async () => {
+    try {
+      const res = await fetch(`${baseURL}/api/guardar-articulo?formato=${formato}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ titulo, contenido, autor }),
+      });
+
+      if (!res.ok) throw new Error("Error al descargar el archivo");
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${titulo}.${formato}`;
+      link.click();
+    } catch (err) {
+      console.error(err);
+      alert("❌ Error al descargar el archivo");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6 flex flex-col items-center space-y-10">
       <p className="text-sm text-gray-500">{`🕒 Ejecutado el: ${fechaHora}`}</p>
@@ -87,9 +109,23 @@ export default function Writing() {
           <Input id="autor" value={autor} onChange={(e) => setAutor(e.target.value)} />
         </div>
 
+        <div className="space-y-2">
+          <Label htmlFor="formato">Formato de descarga</Label>
+          <select
+            id="formato"
+            className="border border-gray-300 rounded px-3 py-2 w-full"
+            value={formato}
+            onChange={(e) => setFormato(e.target.value as "docx" | "pdf")}
+          >
+            <option value="docx">.DOCX</option>
+            <option value="pdf">.PDF</option>
+          </select>
+        </div>
+
         <div className="flex justify-between items-center space-x-4">
           <Button variant="secondary" onClick={handleAudio}>🔊 Audio</Button>
           <Button onClick={handleSubmit}>💾 Guardar</Button>
+          <Button variant="outline" onClick={handleDescargar}>📥 Descargar</Button>
         </div>
 
         {audioURL && (

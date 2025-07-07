@@ -48,14 +48,19 @@ export function RedactorForm({ onGenerado }: { onGenerado?: (titulo: string, con
     return () => clearInterval(interval);
   }, [loading]);
 
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setResultado("");
     setError(null);
 
+    const baseURL = import.meta.env.VITE_API_SRV;  // ✅ Línea que faltaba
+    console.log("🧩 API baseURL desde RedactorForm:", baseURL);
+
     try {
-      const res = await fetch(`${baseURL}/api/texto-audio`, {
+      const res = await fetch(`${baseURL}/api/generar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

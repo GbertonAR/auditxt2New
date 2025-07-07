@@ -9,7 +9,7 @@ import Transcription from './pages/Transcription';
 import Writing from './pages/Writing';
 
 // Estilos Tailwind (asegúrate de tener @tailwind base, components, utilities en index.css)
-import './index.css';
+import './App.css';
 
 export default function App() {
   return (

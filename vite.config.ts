@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
 
   // 📅 Log útil solo durante desarrollo
   const now = new Date();
-  const VITE_API_URL = "http://localhost:8000"
+  const VITE_API_URL = "http://localhost:5173"
   console.log(`🕒 Build ejecutado el: ${now.toLocaleString()}`);
   console.log("🌍 VITE_API_URL (vite.config):", env.VITE_API_URL);
 
@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: env.VITE_API_URL || 'http://localhost:8000',
+          target: env.VITE_API_URL || 'http://localhost:5173',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },

@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "serve": "vite preview"
   },
   "dependencies": {
     "@radix-ui/react-select": "^2.2.5",
