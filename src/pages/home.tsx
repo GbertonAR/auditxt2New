@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen w-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-800 to-blue-500 text-white">
+    // <div className="min-h-screen w-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-800 to-blue-500 text-white">
+
+    <div className="min-h-screen w-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-900 to-blue-600 text-white">    
       <motion.h1
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}

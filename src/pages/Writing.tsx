@@ -80,9 +80,16 @@ export default function Writing() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6 flex flex-col items-center space-y-10">
-      <p className="text-sm text-gray-500">{`🕒 Ejecutado el: ${fechaHora}`}</p>
-      <h1 className="text-4xl font-bold text-center text-primary">📝 Redactor AI</h1>
+    // <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6 flex flex-col items-center space-y-10">
+
+    <div
+      className="min-h-screen bg-[url('/Escribir.png')] bg-cover bg-center bg-fixed p-6 flex flex-col items-center space-y-10"
+      // Si la imagen es muy oscura, puedes añadir una superposición translúcida
+      // style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} // Ejemplo de superposición oscura al 50%
+    >
+
+      <p className="text-sm text-white">{`🕒 Ejecutado el: ${fechaHora}`}</p>
+      <h1 className="text-4xl font-bold text-center text-white">📝 Redactor AI</h1>
 
       <RedactorForm
         onGenerado={(t, c) => {
